@@ -1,0 +1,116 @@
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\WINDOWS\system32> cd ..
+PS C:\WINDOWS> cd Ucers
+cd : Cannot find path 'C:\WINDOWS\Ucers' because it does not exist.
+At line:1 char:1
++ cd Ucers
++ ~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\WINDOWS\Ucers:String) [Set-Location], ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.SetLocationCommand
+
+PS C:\WINDOWS> cd ..
+PS C:\> cd Users
+PS C:\Users> cd Bapi/Sources
+cd : Cannot find path 'C:\Users\Bapi\Sources' because it does not exist.
+At line:1 char:1
++ cd Bapi/Sources
++ ~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\Bapi\Sources:String) [Set-Location], ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.SetLocationCommand
+
+PS C:\Users> cd Bapi
+PS C:\Users\Bapi> cd Sources
+cd : Cannot find path 'C:\Users\Bapi\Sources' because it does not exist.
+At line:1 char:1
++ cd Sources
++ ~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\Bapi\Sources:String) [Set-Location], ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.SetLocationCommand
+
+PS C:\Users\Bapi> cd Source
+PS C:\Users\Bapi\Source> cd repos
+PS C:\Users\Bapi\Source\repos> cd Ecommerce
+PS C:\Users\Bapi\Source\repos\Ecommerce> choco install mkcert
+Chocolatey v2.6.0
+Installing the following packages:
+mkcert
+By installing, you accept licenses for the packages.
+Downloading package from source 'https://community.chocolatey.org/api/v2/'
+
+mkcert v1.4.4 [Approved]
+mkcert package files install completed. Performing other installation steps.
+ ShimGen has successfully created a shim for mkcert.exe
+ The install of mkcert was successful.
+  Deployed to 'C:\ProgramData\chocolatey\lib\mkcert'
+
+Chocolatey installed 1/1 packages.
+ See the log for details (C:\ProgramData\chocolatey\logs\chocolatey.log).
+PS C:\Users\Bapi\Source\repos\Ecommerce> cd Client
+PS C:\Users\Bapi\Source\repos\Ecommerce\Client> mkcert -install
+Created a new local CA 💥
+The local CA is now installed in the system trust store! ⚡️
+
+PS C:\Users\Bapi\Source\repos\Ecommerce\Client> mkdir ssl
+
+
+    Directory: C:\Users\Bapi\Source\repos\Ecommerce\Client
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        19-01-2026     13:18                ssl
+
+
+PS C:\Users\Bapi\Source\repos\Ecommerce\Client> cd ssl
+PS C:\Users\Bapi\Source\repos\Ecommerce\Client\ssl> mkcert localhost
+
+Created a new certificate valid for the following names 📜
+ - "localhost"
+
+The certificate is at "./localhost.pem" and the key at "./localhost-key.pem" ✅
+
+It will expire on 19 April 2028 🗓
+
+PS C:\Users\Bapi\Source\repos\Ecommerce\Client\ssl>
+--------------------------------------------------------------------------------
+PS C:\Users\BAPI\source\repos\Ecommerce> cd Client
+PS C:\Users\BAPI\source\repos\Ecommerce\Client> ng add @angular/material
+
+
+
+--------------------------------------------------
+Need to add below code angular.json code
+
+ "serve": {
+          "builder": "@angular/build:dev-server",
+          "options": {
+            "ssl": true,
+            "sslCert": "ssl/localhost.pem",
+            "sslKey": "ssl/localhost-key.pem"
+          },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
