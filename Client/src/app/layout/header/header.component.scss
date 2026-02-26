@@ -9,3 +9,8 @@
     width: 32px;
     height: 32px;
 }
+a{
+  &.active{
+    color: blue;
+  }
+}
