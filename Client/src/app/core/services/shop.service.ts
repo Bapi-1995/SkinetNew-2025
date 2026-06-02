@@ -8,7 +8,7 @@ import { ShopParams } from '../../shared/models/shopParams';
   providedIn: 'root',
 })
 export class ShopService {
-   baseUrl='http://localhost:5029/api/';
+  baseUrl='http://localhost:5029/api/';
   private http=inject(HttpClient);
   brands:string[]=[];
   types:string[]=[];

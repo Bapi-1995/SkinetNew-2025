@@ -1,0 +1,19 @@
+Back-End: Deep expertise in C#, .NET Core/.NET 6+ and ASP.NET Core.
+Front-End: Proficiency in HTML5, CSS3, JavaScript/TypeScript, and at least one modern framework (React, Angular, or Blazor).
+Database: Strong knowledge of SQL Server, database design, and ORM tools (Entity Framework Core).
+Version Control: Solid experience with Git and GitHub/GitLab.Tools: Experience with Visual Studio/Visual Studio Code.
+Experience in C# .Net AND/OR TypeScript/React
+o Having worked in.NET Core 3.0 and above AND/OR React or Angular
+o Should have middle tiers, services (IE not just front ends)
+Essential experience
+o Building libraries and API''s
+o TDD so Unit Testing, Dependency Injection
+o RESTful APIs and micro services
+Optional but useful experience
+o Docker/containers/Kubernetes
+o Messaging
+
+Additional Information:
+- The candidate should have minimum 5 years of experience in .Net Full Stack Development.
+- This position is based at our Mumbai office.
+- A 15 years full time education is required.

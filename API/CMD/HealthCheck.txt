@@ -1,0 +1,92 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WebsiteHealthCheck.Services
+{
+    public class HealthCheckService
+    {
+        private readonly BrowserService _browser;
+        private readonly ScreenshotService _screenshot;
+        private readonly LoginService _login;
+
+        public HealthCheckService()
+        {
+            _browser = new BrowserService();
+            _screenshot = new ScreenshotService();
+            _login = new LoginService();
+        }
+
+        public void Run(string baseUrl)
+        {
+            _browser.Init();
+            // 🔐 Perform login first
+            try
+            {
+                _login.PerformLogin(
+                      _browser.Driver,
+                      $"{baseUrl}/login",
+                      "Admin",
+                      "admin123"
+                  );
+            }
+            catch {
+                Console.WriteLine("🚫 Stopping further checks due to login failure");
+                return; // graceful stop
+            }
+            var urls = new List<string>
+            {
+                
+               $"https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index",
+               $"https://opensource-demo.orangehrmlive.com/web/index.php/leave/viewLeaveList",
+               $"https://opensource-demo.orangehrmlive.com/web/index.php/time/viewEmployeeTimesheet",
+               $"https://opensource-demo.orangehrmlive.com/web/index.php/performance/searchEvaluatePerformanceReview",
+               $"https://opensource-demo.orangehrmlive.com/web/index.php/claim/viewAssignClaim",
+
+
+            };
+
+            foreach (var url in urls)
+            {
+                CheckPage(url);
+            }
+
+            _browser.Quit();
+        }
+
+        private void CheckPage(string url)
+        {
+            try
+            {
+                Console.WriteLine($"Checking: {url}");
+
+                _browser.Driver.Navigate().GoToUrl(url);
+
+                Thread.Sleep(2000); // wait for load
+
+                var title = _browser.Driver.Title;
+
+                if (string.IsNullOrEmpty(title))
+                {
+                    throw new Exception("Page title missing");
+                }
+
+                _screenshot.Capture(_browser.Driver, Sanitize(url));
+
+                Console.WriteLine($"✅ OK: {url}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ FAIL: {url} - {ex.Message}");
+                _screenshot.Capture(_browser.Driver, "ERROR_" + Sanitize(url));
+            }
+        }
+        private string Sanitize(string url)
+        {
+            return url.Replace("https://", "")
+                      .Replace("/", "_");
+        }
+    }
+}

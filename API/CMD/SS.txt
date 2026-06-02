@@ -1,0 +1,85 @@
+using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SeleniumExtras.WaitHelpers;
+
+namespace WebsiteHealthCheck.Services
+{
+    public class LoginService
+    {
+        public bool PerformLogin(IWebDriver driver, string url, string user, string pass)
+        {
+            driver.Navigate().GoToUrl(url);
+
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+
+            try
+            {
+                // Wait for username field
+                var usernameField = wait.Until(d =>
+                {
+                    var el = d.FindElement(By.Name("username"));
+                    return el.Displayed ? el : null;
+                });
+
+                usernameField.SendKeys(user);
+
+                // Password field (FIXED locator)
+                var passwordField = driver.FindElement(By.Name("password"));
+                passwordField.SendKeys(pass);
+
+                // Login button (FIXED locator)
+                var loginBtn = driver.FindElement(By.CssSelector("button[type='submit']"));
+                loginBtn.Click();
+                // 🔴 Detect login error message (IMPORTANT)
+                //var error = driver.FindElements(By.CssSelector(".oxd-alert-content-text"));
+
+                //if (error.Count > 0)
+                //{
+                //    Console.WriteLine("❌ Invalid credentials");
+
+                //    TakeScreenshot(driver, "INVALID_LOGIN");
+
+                //    return false;
+                //}
+                // Wait for dashboard (NO ExpectedConditions)
+                wait.Until(d => d.Url.Contains("dashboard"));
+
+                Console.WriteLine("✅ Login successful");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Login failed: {ex.Message}");
+
+                // Take screenshot on failure (VERY useful)
+                var screenshot = ((ITakesScreenshot)driver).GetScreenshot();
+                screenshot.SaveAsFile("login_error.png");
+
+                return false;
+            }
+        }
+        private void TakeScreenshot(IWebDriver driver, string name)
+        {
+            try
+            {
+                Directory.CreateDirectory("Screenshots");
+
+                var filePath = $"Screenshots/{name}_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+
+                var screenshot = ((ITakesScreenshot)driver).GetScreenshot();
+                screenshot.SaveAsFile(filePath);
+
+                Console.WriteLine($"📸 Screenshot saved: {filePath}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("⚠️ Screenshot failed: " + e.Message);
+            }
+        }
+    }
+    }

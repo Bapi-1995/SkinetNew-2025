@@ -1,0 +1,81 @@
+Deveops---
+
+DevOps and Version Control: Experience with DevOps practices, version control systems, and tools like Grunt, Gulp, or Webpack.
+ Cloud Services: Familiarity with cloud platforms (e.g., Azure) and mobile push notification services (e.g., Firebase, Infobip).
+
+ Strong knowledge in Azure DevOps Boards, Sprint, Queries, Pipelines (CI/ CD) etc.
+Soft Skills
+
+
+
+Full Stack Developer
+Kolkata, India
+
+Apply Now
+We are great place to work certified
+Recognised by The Manifest
+Recognised by Glassdoor
+Recognition by Clutch
+We are great place to work certified
+Job Details
+Share this job
+
+Available Locations
+Kolkata, India
+Category
+Software Developer Jobs
+Employment Type
+Full-Time
+Seniority
+Senior
+Experience Required
+3 Years Minimum
+Skills Required
+Frontend and Backend Development, PHP, Mern Stack, Python, Java, .NET, React, JavaScript and TypeScript, Generative AI integrations.
+Job Description
+We are seeking a highly skilled Full Stack Developer with strong backend expertise in PHP, MERN Stack, Python, Java, or .NET, combined with modern frontend experience in React or Next.js.
+Roles & Responsibilities
+1. Backend Development
+Design, develop, and maintain scalable backend systems using one or more of:
+MERN (MongoDB, Express.js/ NestJS/Fastify etc, React, Node.js), or
+Python (Django / Flask / FastAPI), or
+Java (Spring Boot), or
+.NET (ASP.NET Core), or
+PHP (Laravel or similar)
+Develop secure RESTful APIs and microservices.
+Implement authentication & authorization (JWT, OAuth, etc.).
+Optimize system performance and scalability.
+Ensure secure coding and compliance with best practices.
+2. Frontend Development
+Develop responsive, modern UI using:
+HTML5
+CSS3
+Bootstrap
+React.js
+Next.js
+Write clean and scalable JavaScript (ES6+) and TypeScript.
+Implement API integrations and state management.
+Ensure mobile-first design and cross-browser compatibility.
+Optimize frontend performance and SEO where applicable.
+3. Generative AI & AI-Assisted Development
+AI Integration
+
+Integrate Large Language Model (LLM) APIs into applications.
+Build AI-powered features such as:
+Intelligent chat systems
+Content generation engines
+AI summarization modules
+Automated workflows
+AI-based recommendations
+Implement prompt engineering best practices.
+Implement prompt engineering best practices.
+Implement prompt engineering best practices.
+AI-Aided Coding
+
+Utilize AI coding assistants to:
+Accelerate feature development
+Generate boilerplate code
+Improve documentation
+Refactor and optimize code
+Ensure AI-generated code meets quality, performance, and security standards.
+Maintain balance between automation and architectural integrity.

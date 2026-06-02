@@ -9,17 +9,23 @@ import { MatFormField, MatLabel } from '@angular/material/select';
 import { MatDivider } from "@angular/material/divider";
 import { MatInkBar } from '@angular/material/tabs';
 import { MatInput } from '@angular/material/input';
+import { CartService } from '../../../core/services/cart.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-details',
-  imports: [CurrencyPipe, MatIcon, MatButton, MatFormField, MatLabel, MatDivider,MatInput],
+  imports: [CurrencyPipe, MatIcon, MatButton, MatFormField, MatLabel, MatDivider,MatInput,FormsModule],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
 })
 export class ProductDetailsComponent implements OnInit {
   private shopService=inject(ShopService);
   private activatedRoute=inject(ActivatedRoute);
+  private cartService=inject(CartService);
   product?: Product;
+  quantityInCart=0;
+  quantity=1;
+
   ngOnInit(): void {
      this.loadProduct();
   }
@@ -28,10 +34,35 @@ export class ProductDetailsComponent implements OnInit {
     const id=this.activatedRoute.snapshot.paramMap.get('id');
     if(!id) return;
     this.shopService.getProduct(+id).subscribe({
-      next: product=> this.product=product,
+      next: product=>{ 
+        this.product=product,
+        this.updateQuantityInCart();
+      },
       error: error=> console.log(error),
     })
 
+  }
+  updateCart(){
+    debugger;
+    if(!this.product) return;
+    if(this.quantity > this.quantityInCart){
+      const itemsToAdd=this.quantity - this.quantityInCart;
+      this.quantityInCart+=itemsToAdd;
+      this.cartService.addItemToCart(this.product,itemsToAdd);
+    }
+    else{
+      const itemsToRemove=this.quantityInCart - this.quantity;
+      this.quantityInCart-=itemsToRemove;
+      this.cartService.removeItemFromCart(this.product.id,itemsToRemove);
+    }
+  }
+  updateQuantityInCart(){
+    debugger;
+    this.quantityInCart=this.cartService.cart()?.items.find(i=>i.productId===this.product?.id)?.quantity ?? 0;
+    this.quantity=this.quantityInCart ||1;
+  }
+  getButtonText(){
+    return this.quantityInCart >0 ? 'Update Cart' : 'Add to Cart';
   }
 
 

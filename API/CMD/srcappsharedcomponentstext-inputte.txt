@@ -1,0 +1,55 @@
+// src/app/shared/components/text-input/text-input.component.ts
+import { Component, Input, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+@Component({
+  selector: 'app-text-input',
+  templateUrl: './text-input.component.html',
+  styleUrls: ['./text-input.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TextInputComponent),
+      multi: true
+    }
+  ]
+})
+export class TextInputComponent implements ControlValueAccessor {
+  @Input() label: string = '';
+  @Input() placeholder: string = '';
+  @Input() type: string = 'text';
+
+  value: string = '';
+  disabled = false;
+
+  // Callbacks for ControlValueAccessor
+  onChange = (value: string) => {};
+  onTouched = () => {};
+
+  // Write value from form model to view
+  writeValue(value: string): void {
+    this.value = value || '';
+  }
+
+  // Register change callback
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  // Register touched callback
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  // Handle disabled state
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  // Handle input change
+  handleInput(event: Event) {
+    const input = (event.target as HTMLInputElement).value;
+    this.value = input;
+    this.onChange(input);
+  }
+}
