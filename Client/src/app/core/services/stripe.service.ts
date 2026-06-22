@@ -106,16 +106,16 @@ async confirmPayment(confirmationToken:ConfirmationToken){
   const clientSecret=this.cartService.cart()?.clientSecret;
   if(stripe && clientSecret){
     return await stripe.confirmPayment({
-      clientSecret,
-      confirmParams:{
-        confirmation_token:confirmationToken.id,
+      clientSecret: clientSecret,
+      confirmParams: {
+        confirmation_token: confirmationToken.id,
         return_url: window.location.href,
       },
-      redirect: 'always',
+      redirect: 'if_required',
     });
   }
   else{
-    throw new Error('Unable to load stripe');
+    throw new Error('Unable to load stripe or client secret');
   }
 }
   CreateOrderPaymentIntent(){

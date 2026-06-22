@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Address, User } from '../../shared/models/user';
 import { map, tap } from 'rxjs';
+import { SignalrService } from './signalr.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class AccountService {
   baseUrl=environment.apiUrl;
   private http=inject(HttpClient);
   currentUser=signal<User | null>(null);
+  private signalrService=inject(SignalrService);
 
   login(values:any){
     let params=new HttpParams();
@@ -20,14 +22,14 @@ export class AccountService {
       Password: values.password ?? values.Password,
       RememberMe: values.rememberMe ?? false
     };
-    return this.http.post<User>(this.baseUrl+'login', body, { params });
+    return this.http.post<User>(this.baseUrl+'login', body, { params, withCredentials: true }).pipe(tap(()=>this.signalrService.createHubConnection()));
   }
   register(values:any){
     return this.http.post(this.baseUrl+'account/register',values);
   }
   getUserInfo(){
     debugger;
-    return this.http.get<User>(this.baseUrl+'account/user-info').pipe(
+    return this.http.get<User>(this.baseUrl+'account/user-info', { withCredentials: true }).pipe(
       map(user =>{
         this.currentUser.set(user);
         return user;
@@ -36,10 +38,10 @@ export class AccountService {
      
   }
   logout(){
-    return this.http.post(this.baseUrl+'account/logout',{});
+    return this.http.post(this.baseUrl+'account/logout',{}, { withCredentials: true }).pipe(tap(()=>this.signalrService.stopHubConnection()));
   }
   updateAddress(address:Address){
-     return this.http.post(this.baseUrl+'account/address',address).pipe(
+     return this.http.post(this.baseUrl+'account/address',address, { withCredentials: true }).pipe(
       tap(()=>{
         this.currentUser.update(user =>{
           if(user)user.address=address;
@@ -49,7 +51,7 @@ export class AccountService {
      )
   }
   getAuthState(){
-    return this.http.get<{isAuthenticated?:boolean, IsAuthenticated?:boolean}>(this.baseUrl+'account/auth-state').pipe(
+    return this.http.get<{isAuthenticated?:boolean, IsAuthenticated?:boolean}>(this.baseUrl+'account/auth-state', { withCredentials: true }).pipe(
       map(response => ({
         isAuthenticated: response.isAuthenticated ?? response.IsAuthenticated ?? false
       }))

@@ -14,17 +14,16 @@ public class PaymentService : IPaymentServie
 {
     private readonly IConfiguration _config;
     private readonly ICartService _cartService;
-    private readonly IGenericRepository<Core.Entities.Product> _productRepo;
-    private readonly IGenericRepository<DeliveryMethod> _dmRepo;
+    private readonly IUnitOfWork _unit;
 
     public PaymentService(IConfiguration config, ICartService cartService,
-        IGenericRepository<Core.Entities.Product> productRepo,
-        IGenericRepository<DeliveryMethod> dmRepo)
+        IUnitOfWork unit)
     {
         _config = config;
         _cartService = cartService;
-        _productRepo = productRepo;
-        _dmRepo = dmRepo;
+        _unit = unit;
+
+        
     }
 
     public async Task<ShoppingCart?> CreateOrUpdatePaymentIntent(string? cartId)
@@ -39,14 +38,14 @@ public class PaymentService : IPaymentServie
         var shippingPrice = 0m;
         if (cart.DeliveryMethodId.HasValue)
         {
-            var deliveryMethod = await _dmRepo.GetByIdAsync((int)cart.DeliveryMethodId);
+            var deliveryMethod = await _unit.Repository<DeliveryMethod>().GetByIdAsync((int)cart.DeliveryMethodId);
             if (deliveryMethod == null) return null;
             shippingPrice = deliveryMethod.Price;
         }
 
         foreach (var item in cart.Items)
         {
-            var productItem = await _productRepo.GetByIdAsync(item.ProductId);
+            var productItem = await  _unit.Repository<Core.Entities.Product>().GetByIdAsync(item.ProductId);
             if (productItem == null) return null;
             if (item.Price != productItem.Price)
             {

@@ -5,6 +5,7 @@ using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using StackExchange.Redis;
+using Stripe;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,8 @@ builder.Services.ConfigureApplicationCookie(options => {
     options.ExpireTimeSpan = TimeSpan.FromDays(30);
 });
 builder.Services.AddScoped<IPaymentServie, PaymentService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -45,8 +48,14 @@ app.UseCors(opt =>
     opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200","https://localhost:4200");
 });
 
+// Enable authentication/authorization middleware so authorization challenges
+// and policies run correctly in the request pipeline (including preflight).
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<AppUser>(); //api/login
+app.MapHub<NotificationHub>("/hub/notifications");
 
 try
 {

@@ -1,4 +1,4 @@
-{
+﻿{
   "Logging": {
     "LogLevel": {
       "Default": "Information",
@@ -11,6 +11,8 @@
     "Redis": "localhost"
   },
   "StripeSettings": {
-    "PublishableKey": "REPLACE_WITH_STRIPE_PUBLISHABLE_KEY",
-    "SecretKey": "REPLACE_WITH_STRIPE_SECRET_KEY"
+    "PublishableKey": "pk_test_your_publishable_key_here",
+    "SecretKey": "sk_test_your_secret_key_here",
+    "WhSecret": "whsec_your_webhook_secret_here"
+  }
 }

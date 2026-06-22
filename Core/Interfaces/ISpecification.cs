@@ -9,6 +9,8 @@ public interface ISpecification<T>
     Expression<Func<T,bool>>? Criteria { get; } 
     Expression<Func<T,Object>>? OrderBy { get; }
     Expression<Func<T,Object>>? OrderByDescending { get; }
+    List<Expression<Func<T,Object>>>? Includes { get; }
+    List<string> IncludeStrings { get; } // for then include
     bool IsDistinct { get; }
     int Skip { get; }
     int Take { get; }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 
-public class ProductController(IGenericRepository<Product> repo) : BaseApiController
+public class ProductController(IUnitOfWork unit) : BaseApiController
 {
    
     [HttpGet]
@@ -18,12 +18,12 @@ public class ProductController(IGenericRepository<Product> repo) : BaseApiContro
         // var count= await repo.CountAsync(spec);
         // var pagination=new Pagination<Product>(specParams.PageIndex,specParams.PageSize,count,products);
         // return Ok(pagination);
-        return await CreatePageResult(repo,spec,specParams.PageIndex,specParams.PageSize);
+        return await CreatePageResult(unit.Repository<Product>(),spec,specParams.PageIndex,specParams.PageSize);
     }
     [HttpGet("{id:int}")]
     public async Task<ActionResult<Product>> GetProduct(int id)
     {
-        var product = await repo.GetByIdAsync(id);
+        var product = await unit.Repository<Product>().GetByIdAsync(id);
         if (product == null)
         {
             return NotFound();
@@ -33,8 +33,8 @@ public class ProductController(IGenericRepository<Product> repo) : BaseApiContro
     [HttpPost]
     public async Task<ActionResult<Product>> CreateProduct(Product product)
     {
-        repo.Add(product);
-        if(await repo.SaveAllAsync())
+        unit.Repository<Product>().Add(product);
+        if(await unit.Complete())
         {
             return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
         }
@@ -49,8 +49,8 @@ public class ProductController(IGenericRepository<Product> repo) : BaseApiContro
             return BadRequest("Cannot update this product");
         }
         
-             repo.Update(product);
-             if(await repo.SaveAllAsync())
+             unit.Repository<Product>().Update(product);
+             if(await unit.Complete())
              {
                 return NoContent();
              }
@@ -59,13 +59,13 @@ public class ProductController(IGenericRepository<Product> repo) : BaseApiContro
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeleteProduct(int id)
     {
-        var product = await repo.GetByIdAsync(id);
+        var product = await unit.Repository<Product>().GetByIdAsync(id);
         if (product == null)
         {
             return NotFound();
         }
-        repo.Remove(product);
-        if(await repo.SaveAllAsync())
+        unit.Repository<Product>().Remove(product);
+        if(await unit.Complete())
              {
                 return NoContent();
              }
@@ -76,18 +76,18 @@ public class ProductController(IGenericRepository<Product> repo) : BaseApiContro
     {
         var spec= new BrandListSpecification();
         //(await repo.GetBrandsAsync()
-        return Ok(await repo.ListAsync(spec));
+        return Ok(await unit.Repository<Product>().ListAsync(spec));
     }
     [HttpGet("types")]
     public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
     {
         var spec= new TypeListSpecification();
         //await repo.GetTypesAsync()
-        return Ok(await repo.ListAsync(spec));
+        return Ok(await unit.Repository<Product>().ListAsync(spec));
     }
     private bool ProductExists(int id)
     {
-        return repo.Exist(id);
+        return unit.Repository<Product>().Exist(id);
     }
 
 }

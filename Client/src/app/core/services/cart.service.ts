@@ -81,13 +81,16 @@ export class CartService {
         }
 
       }
-  deleteCart() {
-    return this.http.delete(this.baseUrl+'cart?id='+this.cart()?.id).pipe(
-      map(() => {
+ deleteCart(): void {
+    this.http.delete(this.baseUrl+'cart?id='+this.cart()?.id).subscribe({
+      next: () => {
         localStorage.removeItem('cart_id');
         this.cart.set(null);
-      })
-    )
+      },
+      error: error => {
+        console.error('Failed to delete cart', error);
+      }
+    });
   }
   addOrUpdateItem(items: CartItem[], item: CartItem, quantity: number): CartItem[] {
     debugger;

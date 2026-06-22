@@ -1,16 +1,16 @@
-{
+﻿{
   "Logging": {
     "LogLevel": {
       "Default": "Information",
       "Microsoft.AspNetCore": "Information"
     }
-
   },
   "ConnectionStrings": {
     "DefaultConnection":"Server=localhost,1433;Database=Ecommerce;User Id=SA;Password=Your_password123;TrustServerCertificate=True",
     "redis": "localhost"
   },
   "StripeSettings": {
-    "PublishableKey": "REPLACE_WITH_STRIPE_PUBLISHABLE_KEY",
-    "SecretKey": "REPLACE_WITH_STRIPE_SECRET_KEY"
-  
+    "PublishableKey": "pk_test_your_publishable_key_here",
+    "SecretKey": "sk_test_your_secret_key_here"
+  }
+}
