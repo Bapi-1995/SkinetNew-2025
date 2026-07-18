@@ -23,8 +23,11 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddCors();
 builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
 {
-    var connString = builder.Configuration.GetConnectionString("Redis") ?? throw new Exception("Cannot get redis connection string");
-    var configuration =ConfigurationOptions.Parse(connString, true);
+    var connString = builder.Configuration.GetConnectionString("Redis")
+                     ?? builder.Configuration["ConnectionStrings:Redis"]
+                     ?? builder.Configuration["ConnectionStrings:redis"]
+                     ?? throw new Exception("Cannot get redis connection string");
+    var configuration = ConfigurationOptions.Parse(connString, true);
     return ConnectionMultiplexer.Connect(configuration);
 });
 builder.Services.AddSingleton<ICartService, CartService>();
@@ -43,9 +46,16 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseCors(opt =>
 {
-    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200","https://localhost:4200");
+    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(
+        "http://localhost:4200",
+        "https://localhost:4200",
+        "http://localhost:5030",
+        "https://localhost:5030"
+    );
 });
 
 // Enable authentication/authorization middleware so authorization challenges
@@ -56,6 +66,7 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<AppUser>(); //api/login
 app.MapHub<NotificationHub>("/hub/notifications");
+app.MapFallbackToController("Index","Fallback");
 
 try
 {

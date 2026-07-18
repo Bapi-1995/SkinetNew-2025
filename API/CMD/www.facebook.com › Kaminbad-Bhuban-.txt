@@ -1,0 +1,8 @@
+www.facebook.com › Kaminbad-Bhuban-Mohini-HighKaminbad Bhuban Mohini High School 
+
+
+redis-cli --tls -u redis://default:gQAAAAAAAgneAAIgcDFlNWU3Mjg5ZmRjM2Q0YTA5OTU0NDc5MDNmNzRjYWFhNA@equal-sawfish-133598.upstash.io:6379
+
+
+ "Redis": "equal-sawfish-133598.upstash.io:6379,password=gQAAAAAAAgneAAIgcDFlNWU3Mjg5ZmRjM2Q0YTA5OTU0NDc5MDNmNzRjYWFhNA,ssl=true,abortConnection=False"
+redis-cli --tls -u redis://default:gQAAAAAAAgneAAIgcDFlNWU3Mjg5ZmRjM2Q0YTA5OTU0NDc5MDNmNzRjYWFhNA@equal-sawfish-133598.upstash.io:6379
