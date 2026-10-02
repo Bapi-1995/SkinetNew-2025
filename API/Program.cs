@@ -28,6 +28,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
                      ?? builder.Configuration["ConnectionStrings:redis"]
                      ?? throw new Exception("Cannot get redis connection string");
     var configuration = ConfigurationOptions.Parse(connString, true);
+    configuration.AbortOnConnectFail = false;
     return ConnectionMultiplexer.Connect(configuration);
 });
 builder.Services.AddSingleton<ICartService, CartService>();
